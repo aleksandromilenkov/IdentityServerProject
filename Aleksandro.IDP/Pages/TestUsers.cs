@@ -24,19 +24,20 @@ public static class TestUsers
                     Password = "password",
 
                     Claims = new List<Claim>
-                    {
+                    { new Claim("role", "FreeUser"),
                         new Claim(JwtClaimTypes.GivenName, "David"),
                         new Claim(JwtClaimTypes.FamilyName, "Flagg")
                     }
                 },
                 new TestUser
                 {
+                   
                     SubjectId = "b7539694-97e7-4dfe-84da-b4256e1ff5c7",
                     Username = "Emma",
                     Password = "password",
 
                     Claims = new List<Claim>
-                    {
+                    { new Claim("role", "PayingUser"),
                         new Claim(JwtClaimTypes.GivenName, "Emma"),
                         new Claim(JwtClaimTypes.FamilyName, "Flagg")
                     }
