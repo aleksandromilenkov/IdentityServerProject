@@ -187,6 +187,9 @@ namespace ImageGallery.Client.Controllers
         {
             // get the saved identity token
             var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
+
+            // get the saved access token
+            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
             var userClaimsStringBuilder = new StringBuilder();
             foreach (var claim in User.Claims)
             {
@@ -196,6 +199,7 @@ namespace ImageGallery.Client.Controllers
             }
             // log token & claims
             _logger.LogInformation($"Identity token & user claims: " + $"\n {identityToken} \n{userClaimsStringBuilder}");
+            _logger.LogInformation($"Access token " + $"\n {accessToken}");
         }
     }
 }
