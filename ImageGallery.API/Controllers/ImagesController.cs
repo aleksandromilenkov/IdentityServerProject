@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using ImageGallery.API.Services;
+using ImageGallery.Client.Controllers;
 using ImageGallery.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ImageGallery.API.Controllers
 {
@@ -13,12 +15,13 @@ namespace ImageGallery.API.Controllers
     {
         private readonly IGalleryRepository _galleryRepository;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly ILogger<GalleryController> _logger;
         private readonly IMapper _mapper;
 
         public ImagesController(
             IGalleryRepository galleryRepository,
             IWebHostEnvironment hostingEnvironment,
-            IMapper mapper)
+            IMapper mapper, ILogger<GalleryController> logger)
         {
             _galleryRepository = galleryRepository ?? 
                 throw new ArgumentNullException(nameof(galleryRepository));
@@ -26,13 +29,28 @@ namespace ImageGallery.API.Controllers
                 throw new ArgumentNullException(nameof(hostingEnvironment));
             _mapper = mapper ?? 
                 throw new ArgumentNullException(nameof(mapper));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet()]
         public async Task<ActionResult<IEnumerable<Image>>> GetImages()
         {
+            var token = Request.Headers["Authorization"];
+            _logger.LogInformation("Received Token: " + token);
+            // Log all claims for debugging purposes
+            var claims = User.Claims.ToList(); // This should give you all the claims
+            foreach (var claim in claims)
+            {
+                _logger.LogInformation($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+            }
+            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+            if(ownerId == null)
+            {
+                throw new Exception("User identifier is missing from token");
+            }
+
             // get from repo
-            var imagesFromRepo = await _galleryRepository.GetImagesAsync();
+            var imagesFromRepo = await _galleryRepository.GetImagesAsync(ownerId);
 
             // map to model
             var imagesToReturn = _mapper.Map<IEnumerable<Image>>(imagesFromRepo);
@@ -57,6 +75,7 @@ namespace ImageGallery.API.Controllers
         }
 
         [HttpPost()]
+        [Authorize(Roles = "PayingUser")]
         public async Task<ActionResult<Image>> CreateImage([FromBody] ImageForCreation imageForCreation)
         {
             // Automapper maps only the Title in our configuration
@@ -84,6 +103,13 @@ namespace ImageGallery.API.Controllers
             // ownerId should be set - can't save image in starter solution, will
             // be fixed during the course
             //imageEntity.OwnerId = ...;
+
+            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+            if(ownerId == null)
+            {
+                throw new Exception("User identifier is missing from token");
+            }
+            imageEntity.OwnerId = ownerId;
 
             // add and save.  
             _galleryRepository.AddImage(imageEntity);

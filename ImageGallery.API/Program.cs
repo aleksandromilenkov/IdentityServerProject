@@ -23,7 +23,7 @@ builder.Services.AddScoped<IGalleryRepository, GalleryRepository>();
 // register AutoMapper-related services
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
