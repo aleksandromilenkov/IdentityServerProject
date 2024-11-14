@@ -11,6 +11,8 @@ public static class Config
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
             new IdentityResource("roles", "Your role(s)", new[] {"role"}),
+            //adding new claim for country that we'll need for the Policy:
+            new IdentityResource("country", "The country you are living in", new List<string>{"country"}),
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -21,7 +23,10 @@ public static class Config
 
     public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
     {
-        new ApiResource("imagegalleryapi", "Image Gallery API", new[] {"role"})
+        new ApiResource("imagegalleryapi",
+            "Image Gallery API",
+            new[] {"role", "country"}
+            )
         {
             Scopes = { "imagegalleryapi.fullaccess" }
         }
@@ -48,7 +53,8 @@ public static class Config
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "roles",
-                        "imagegalleryapi.fullaccess"
+                        "imagegalleryapi.fullaccess",
+                        "country"
                     },
                     ClientSecrets =
                     {
