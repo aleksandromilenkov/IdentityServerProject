@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using System.Security.Cryptography;
 
 namespace Aleksandro.IDP;
 
@@ -42,6 +43,11 @@ public static class Config
                     ClientName= "Image Gallery",
                     ClientId = "imagegalleryclient",
                     AllowedGrantTypes = GrantTypes.Code,
+                    //IdentityTokenLifetime = ... The default is 5 minutes but you can set it here to custom value
+                    // AuthorizationCodeLifetime = ... Time for lasting the code that is exchanged for accessToken in the Client
+                    AccessTokenLifetime = 120,
+                    AllowOfflineAccess = true, // this is creating the 'offline_access' scope this is needed for refresh tokens
+                    UpdateAccessTokenClaimsOnRefresh = true, // If some user claim is changed this will update it
                     RedirectUris =
                     {
                         "https://localhost:7184/signin-oidc"

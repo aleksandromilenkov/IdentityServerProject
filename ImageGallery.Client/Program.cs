@@ -58,6 +58,7 @@ builder.Services.AddAuthentication(options =>
     //options.Scope.Add("imagegalleryapi.fullaccess"); // we delete this scope on the identity server. Now we only have read and write
     options.Scope.Add("imagegalleryapi.read");
     options.Scope.Add("imagegalleryapi.write");
+    options.Scope.Add("offline_access");
     options.Scope.Add("country");
     options.ClaimActions.MapJsonKey("role", "role");
     options.ClaimActions.MapUniqueJsonKey("country", "country");
