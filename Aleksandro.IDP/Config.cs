@@ -31,7 +31,8 @@ public static class Config
             new[] {"role", "country"}
             )
         {
-            Scopes = { "imagegalleryapi.fullaccess", "imagegalleryapi.write", "imagegalleryapi.read" }
+            Scopes = { "imagegalleryapi.fullaccess", "imagegalleryapi.write", "imagegalleryapi.read" },
+            ApiSecrets = { new Secret("apisecret".Sha256())}
         }
     };
 
@@ -43,6 +44,7 @@ public static class Config
                     ClientName= "Image Gallery",
                     ClientId = "imagegalleryclient",
                     AllowedGrantTypes = GrantTypes.Code,
+                    AccessTokenType = AccessTokenType.Reference,
                     //IdentityTokenLifetime = ... The default is 5 minutes but you can set it here to custom value
                     // AuthorizationCodeLifetime = ... Time for lasting the code that is exchanged for accessToken in the Client
                     AccessTokenLifetime = 120,
