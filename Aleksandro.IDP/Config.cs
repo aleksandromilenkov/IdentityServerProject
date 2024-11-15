@@ -18,7 +18,9 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
             { 
-                new ApiScope("imagegalleryapi.fullaccess")            
+                new ApiScope("imagegalleryapi.fullaccess"),            
+                new ApiScope("imagegalleryapi.write"),            
+                new ApiScope("imagegalleryapi.read"),            
             };
 
     public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
@@ -28,7 +30,7 @@ public static class Config
             new[] {"role", "country"}
             )
         {
-            Scopes = { "imagegalleryapi.fullaccess" }
+            Scopes = { "imagegalleryapi.fullaccess", "imagegalleryapi.write", "imagegalleryapi.read" }
         }
     };
 
@@ -53,7 +55,9 @@ public static class Config
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "roles",
-                        "imagegalleryapi.fullaccess",
+                        //"imagegalleryapi.fullaccess",
+                        "imagegalleryapi.read",
+                        "imagegalleryapi.write",
                         "country"
                     },
                     ClientSecrets =

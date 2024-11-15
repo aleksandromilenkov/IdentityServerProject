@@ -44,7 +44,7 @@ namespace ImageGallery.API.Services
 
         public void UpdateImage(Image image)
         {
-            // no code in this implementation
+            _context.Images.Update(image);
         }
 
         public void DeleteImage(Image image)
