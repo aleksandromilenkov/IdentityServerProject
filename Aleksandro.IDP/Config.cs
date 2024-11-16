@@ -70,7 +70,7 @@ public static class Config
                     {
                         new Secret("tajna".Sha256())
                     },
-                    RequireConsent= true
+                    //RequireConsent= true
                 }
             };
 }

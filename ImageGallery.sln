@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageGallery.Model", "Image
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aleksandro.IDP", "Aleksandro.IDP\Aleksandro.IDP.csproj", "{A7C87BE0-E3EF-42AF-9497-56E9BDD25DC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageGallery.Authorization", "ImageGallery.Authorization\ImageGallery.Authorization.csproj", "{24611EA5-D49C-4BF4-A27B-7BBE7D8EC6FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageGallery.Authorization", "ImageGallery.Authorization\ImageGallery.Authorization.csproj", "{24611EA5-D49C-4BF4-A27B-7BBE7D8EC6FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
