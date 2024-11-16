@@ -5,6 +5,7 @@ using ImageGallery.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,8 @@ builder.Services.AddScoped<IAuthorizationHandler, MustOwnImageHandler>();
 // register AutoMapper-related services
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -49,7 +52,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddOAuth2Introspection(options =>
       {
           options.Authority = "https://localhost:5001";
-          options.ClientId = "imagegalleryapi"; // replace the Audience from AddJwtBearer
+          options.ClientId = "imagegalleryapi";// replace the Audience from AddJwtBearer
           options.ClientSecret = "apisecret";
           options.NameClaimType = "given_name";
           options.RoleClaimType = "role";

@@ -26,10 +26,7 @@ public static class Config
 
     public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
     {
-        new ApiResource("imagegalleryapi",
-            "Image Gallery API",
-            new[] {"role", "country"}
-            )
+        new ApiResource("imagegalleryapi", "Image Gallery API", new[] {"role", "country"})
         {
             Scopes = { "imagegalleryapi.fullaccess", "imagegalleryapi.write", "imagegalleryapi.read" },
             ApiSecrets = { new Secret("apisecret".Sha256())}
@@ -44,6 +41,7 @@ public static class Config
                     ClientName= "Image Gallery",
                     ClientId = "imagegalleryclient",
                     AllowedGrantTypes = GrantTypes.Code,
+                    //AccessTokenType = AccessTokenType.Jwt,
                     AccessTokenType = AccessTokenType.Reference,
                     //IdentityTokenLifetime = ... The default is 5 minutes but you can set it here to custom value
                     // AuthorizationCodeLifetime = ... Time for lasting the code that is exchanged for accessToken in the Client
