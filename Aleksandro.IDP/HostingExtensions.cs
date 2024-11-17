@@ -15,6 +15,20 @@ internal static class HostingExtensions
     public static WebApplication ConfigureServices(
         this WebApplicationBuilder builder)
     {
+        // configure IIS out-of-proccess settings
+        builder.Services.Configure<IISOptions>(iis =>
+        {
+            iis.AuthenticationDisplayName = "Windows";
+            iis.AutomaticAuthentication = false;
+        });
+
+        // configure IIS in-proccess settings
+        builder.Services.Configure<IISServerOptions>(iis =>
+        {
+            iis.AuthenticationDisplayName = "Windows";
+            iis.AutomaticAuthentication = false;
+        });
+
         // uncomment if you want to add a UI
         builder.Services.AddRazorPages();
 
