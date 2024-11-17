@@ -5,6 +5,8 @@ using Aleksandro.IDP.DbContexts;
 using Aleksandro.IDP.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Microsoft.AspNetCore.Identity;
+using Aleksandro.IDP.Entities;
 
 namespace Aleksandro.IDP;
 
@@ -17,6 +19,8 @@ internal static class HostingExtensions
         builder.Services.AddRazorPages();
 
         builder.Services.AddScoped<ILocalUserService, LocalUserService>();
+
+        builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
         builder.Services.AddDbContext<IdentityDbContext>(options =>
         {
