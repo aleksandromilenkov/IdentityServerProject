@@ -16,6 +16,10 @@ namespace Aleksandro.IDP.Pages.User.Registration
         [Display(Name ="Password")] 
         public string Password { get; set; }
 
+        [MaxLength(200)]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
         [Required]
         [MaxLength(200)]
         [Display(Name = "Given name")]

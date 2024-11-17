@@ -50,7 +50,8 @@ namespace Aleksandro.IDP.Pages.User.Registration
             {
                 UserName = Input.UserName,
                 Subject = Guid.NewGuid().ToString(),
-                Active = true
+                Email = Input.Email,
+                Active = false
             };
             userToCreate.Claims.Add(new Entities.UserClaim()
             {
@@ -73,23 +74,31 @@ namespace Aleksandro.IDP.Pages.User.Registration
             _localUserService.AddUser(userToCreate, Input.Password);
             await _localUserService.SaveChangesAsync();
 
+            // create an activation link - we need an absolute URL, therefore we use Url.PageLink instead of Url.Page
+            var activationLink = Url.PageLink("/user/activation/index", values: new {securityCode = userToCreate.SecurityCode});
+
+            Console.WriteLine(activationLink);
+
+            return Redirect("~/User/ActivationCodeSent"); 
+
+            //Now We dont want to login the user directly instead we are redirecting it to activation code sent page
+
             // Issue authentication cookie (log the user in)
-            var isUser = new IdentityServerUser(userToCreate.Subject)
-            {
-                DisplayName = userToCreate.UserName
-            };
-            await HttpContext.SignInAsync(isUser);
+            //var isUser = new IdentityServerUser(userToCreate.Subject)
+            //{
+            //    DisplayName = userToCreate.UserName
+            //};
+            //await HttpContext.SignInAsync(isUser);
+
 
             // continue with the flow     
-            if (_interaction.IsValidReturnUrl(Input.ReturnUrl)
-                || Url.IsLocalUrl(Input.ReturnUrl))
-            {
-                return Redirect(Input.ReturnUrl);
-            }
+            //if (_interaction.IsValidReturnUrl(Input.ReturnUrl)
+            //    || Url.IsLocalUrl(Input.ReturnUrl))
+            //{
+            //    return Redirect(Input.ReturnUrl);
+            //}
 
-            return Redirect("~/");
-
-
+            //return Redirect("~/");
         }
 
     }

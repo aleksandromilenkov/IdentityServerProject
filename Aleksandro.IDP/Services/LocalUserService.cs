@@ -2,6 +2,7 @@
 using Aleksandro.IDP.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace Aleksandro.IDP.Services
 {
@@ -104,13 +105,41 @@ namespace Aleksandro.IDP.Services
                 // return this as a validation issue
                 throw new Exception("Username must be unique");
             }
+
+            if(_context.Users.Any(u=> u.Email == userToAdd.Email))
+            {
+                throw new Exception("Email must be unique");
+            }
+
+            userToAdd.SecurityCode = Convert.ToBase64String(RandomNumberGenerator.GetBytes(128));
+            userToAdd.SecurityCodeExpirationDate = DateTime.UtcNow.AddHours(1);
             // hash & salt the password
             userToAdd.Password = _passwordHasher.HashPassword(userToAdd, password);
 
             _context.Users.Add(userToAdd);
         }
 
-  
+        public async Task<bool> ActivateUserAsync(string securityCode)
+        {
+            if (String.IsNullOrWhiteSpace(securityCode))
+            {
+                throw new ArgumentNullException(nameof(securityCode));
+            }
+
+           var user = _context.Users.FirstOrDefault(u => u.SecurityCode == securityCode && u.SecurityCodeExpirationDate >= DateTime.UtcNow);
+            
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.Active = true;
+            user.SecurityCode = null;
+            return true;
+        }
+
+
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync() > 0);
