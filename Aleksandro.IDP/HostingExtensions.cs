@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Microsoft.AspNetCore.Identity;
 using Aleksandro.IDP.Entities;
+using Duende.IdentityServer;
 
 namespace Aleksandro.IDP;
 
@@ -55,6 +56,14 @@ internal static class HostingExtensions
             .AddInMemoryApiResources(Config.ApiResources)
             .AddInMemoryClients(Config.Clients);
 
+        builder.Services
+            .AddAuthentication()
+            .AddFacebook("Facebook", options =>
+            {
+                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                options.AppId = "590864746734956";
+                options.AppSecret = "42395519b37e2c7bad5a518fa9a1c9ea";
+            });
 
         return builder.Build();
     }
