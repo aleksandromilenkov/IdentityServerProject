@@ -1,4 +1,5 @@
 ﻿using Aleksandro.IDP.Entities;
+using System.Security.Claims;
 
 namespace Aleksandro.IDP.Services
 {
@@ -23,6 +24,12 @@ namespace Aleksandro.IDP.Services
             string subject);
 
         Task<bool> ActivateUserAsync(string securityCode);
+
+        Task<User> FindUserByExternalProviderAsync(string provider, string providerIdentityKey);
+
+        public User AutoProvisionUser(string provider,
+           string providerIdentityKey,
+           IEnumerable<Claim> claims);
 
         Task<bool> SaveChangesAsync();
     }

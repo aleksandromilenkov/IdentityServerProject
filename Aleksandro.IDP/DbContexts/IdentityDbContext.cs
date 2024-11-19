@@ -8,6 +8,7 @@ namespace Aleksandro.IDP.DbContexts
         public DbSet<User> Users { get; set; }
 
         public DbSet<UserClaim> UserClaims { get; set; }         
+        public DbSet<UserLogin> UserLogins { get; set; }         
 
         public IdentityDbContext(
           DbContextOptions<IdentityDbContext> options)
